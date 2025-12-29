@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { PropertyImage, PropertyVideo, Complex, PropertyType, PhotoZone, VideoCategory } from '../types';
 import { ADMIN_PASSWORD } from '../constants';
 
@@ -12,6 +13,7 @@ interface AdminPanelProps {
 const AdminPanel: React.FC<AdminPanelProps> = ({ images, setImages, videos, setVideos }) => {
   const [password, setPassword] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [newImage, setNewImage] = useState({
     complex: Complex.C1,
@@ -32,9 +34,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ images, setImages, videos, setV
     else alert('비밀번호가 틀립니다. (기본: 1234)');
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewImage(prev => ({ ...prev, imageUrl: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const addImage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newImage.imageUrl) return;
+    if (!newImage.imageUrl) {
+      alert('이미지를 선택해주세요.');
+      return;
+    }
     const img: PropertyImage = {
       id: `img_${Date.now()}`,
       ...newImage,
@@ -42,6 +58,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ images, setImages, videos, setV
     };
     setImages(prev => [img, ...prev]);
     setNewImage({ ...newImage, imageUrl: '' });
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const addVideo = (e: React.FormEvent) => {
@@ -101,7 +118,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ images, setImages, videos, setV
       <section className="space-y-10">
         <div className="border-l-4 border-[#8c734b] pl-6">
           <h3 className="text-2xl font-bold text-gray-900">Photo Inventory</h3>
-          <p className="text-sm text-gray-400 mt-1 uppercase tracking-widest">Upload and manage visual assets</p>
+          <p className="text-sm text-gray-400 mt-1 uppercase tracking-widest">Gallery Upload and manage visual assets</p>
         </div>
         
         <form onSubmit={addImage} className="grid grid-cols-1 md:grid-cols-5 gap-6 items-end bg-white p-10 rounded-[2rem] shadow-sm border border-gray-100 luxury-shadow">
@@ -124,8 +141,25 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ images, setImages, videos, setV
             </select>
           </div>
           <div className="space-y-3">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Image URL</label>
-            <input className="w-full bg-gray-50 border-gray-100 rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#8c734b]" placeholder="https://..." value={newImage.imageUrl} onChange={e => setNewImage({...newImage, imageUrl: e.target.value})} required />
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Select Photo</label>
+            <div className="relative">
+              <input 
+                ref={fileInputRef}
+                type="file" 
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden" 
+                id="photo-upload"
+              />
+              <label 
+                htmlFor="photo-upload" 
+                className={`flex items-center justify-center w-full px-4 py-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${newImage.imageUrl ? 'border-[#8c734b] bg-[#8c734b]/5 text-[#8c734b]' : 'border-gray-200 hover:border-[#8c734b] text-gray-400'}`}
+              >
+                <span className="text-xs font-bold truncate">
+                  {newImage.imageUrl ? 'Image Selected ✓' : 'Choose from Gallery'}
+                </span>
+              </label>
+            </div>
           </div>
           <button type="submit" className="w-full bg-black text-white py-4 rounded-xl font-bold text-sm hover:bg-[#8c734b] transition-all shadow-lg active:scale-[0.98]">REGISTER</button>
         </form>

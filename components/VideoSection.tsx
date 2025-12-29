@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PropertyVideo, VideoCategory } from '../types';
 
@@ -12,22 +11,26 @@ const VideoSection: React.FC<VideoSectionProps> = ({ videos }) => {
   const filteredVideos = videos.filter(v => filter === 'ALL' || v.category === filter);
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      <div className="flex flex-wrap gap-2">
+    <div className="space-y-12 animate-fadeIn max-w-7xl mx-auto">
+      <div className="flex flex-wrap gap-3 justify-center">
         <button
           onClick={() => setFilter('ALL')}
-          className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-            filter === 'ALL' ? 'bg-[#8c734b] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+          className={`px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${
+            filter === 'ALL' 
+            ? 'bg-[#8c734b] text-white shadow-xl shadow-[#8c734b]/20 scale-105' 
+            : 'bg-white text-gray-400 border border-gray-100 hover:text-gray-800 luxury-shadow'
           }`}
         >
-          전체
+          All / 전체
         </button>
         {Object.values(VideoCategory).map(cat => (
           <button
             key={cat}
             onClick={() => setFilter(cat)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              filter === cat ? 'bg-[#8c734b] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+            className={`px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${
+              filter === cat 
+              ? 'bg-[#8c734b] text-white shadow-xl shadow-[#8c734b]/20 scale-105' 
+              : 'bg-white text-gray-400 border border-gray-100 hover:text-gray-800 luxury-shadow'
             }`}
           >
             {cat}
@@ -35,9 +38,9 @@ const VideoSection: React.FC<VideoSectionProps> = ({ videos }) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {filteredVideos.map(video => (
-          <div key={video.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100">
+          <div key={video.id} className="group bg-white rounded-[2.5rem] overflow-hidden luxury-shadow border border-gray-100 transition-all hover:-translate-y-2">
             <div className="aspect-video relative">
               <iframe
                 src={`https://www.youtube.com/embed/${video.youtubeId}`}
@@ -46,11 +49,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({ videos }) => {
                 allowFullScreen
               ></iframe>
             </div>
-            <div className="p-6">
-              <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-widest mb-2 block">
+            <div className="p-8">
+              <span className="text-[10px] font-black text-[#8c734b] uppercase tracking-[0.3em] mb-3 block">
                 {video.category}
               </span>
-              <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#8c734b] transition-colors">
+              <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#8c734b] transition-colors line-clamp-2 leading-relaxed">
                 {video.title}
               </h3>
             </div>
@@ -58,8 +61,8 @@ const VideoSection: React.FC<VideoSectionProps> = ({ videos }) => {
         ))}
 
         {filteredVideos.length === 0 && (
-           <div className="col-span-full py-20 text-center text-gray-400">
-             해당 카테고리의 영상이 없습니다.
+           <div className="col-span-full py-40 text-center">
+             <p className="text-gray-400 font-bold text-sm tracking-widest uppercase italic">No Archives Available / 영상 정보가 없습니다</p>
            </div>
         )}
       </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ViewState } from '../types';
 
@@ -17,40 +16,40 @@ const Header: React.FC<HeaderProps> = ({ currentView, onViewChange }) => {
           </div>
           <div>
             <h1 className="text-lg md:text-xl font-bold tracking-tight text-[#222]">창원사화 롯데캐슬 포레스트</h1>
-            <p className="text-[10px] uppercase tracking-widest text-[#8c734b] font-medium">Image Comparison System</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#8c734b] font-medium italic">Premium Image Archive</p>
           </div>
         </div>
 
-        <nav className="flex items-center bg-gray-50 p-1 rounded-lg">
+        <nav className="flex items-center bg-gray-50 p-1 rounded-xl">
           <button
             onClick={() => onViewChange('GALLERY')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+            className={`px-4 py-2 text-[11px] md:text-xs font-bold rounded-lg transition-all uppercase tracking-wider ${
               currentView === 'GALLERY' 
               ? 'bg-white text-[#8c734b] shadow-sm' 
-              : 'text-gray-500 hover:text-gray-800'
+              : 'text-gray-400 hover:text-gray-800'
             }`}
           >
-            이미지 갤러리
+            Gallery / 갤러리
           </button>
           <button
             onClick={() => onViewChange('VIDEO')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+            className={`px-4 py-2 text-[11px] md:text-xs font-bold rounded-lg transition-all uppercase tracking-wider ${
               currentView === 'VIDEO' 
               ? 'bg-white text-[#8c734b] shadow-sm' 
-              : 'text-gray-500 hover:text-gray-800'
+              : 'text-gray-400 hover:text-gray-800'
             }`}
           >
-            영상 카테고리
+            Video / 영상
           </button>
           <button
             onClick={() => onViewChange('ADMIN')}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+            className={`px-4 py-2 text-[11px] md:text-xs font-bold rounded-lg transition-all uppercase tracking-wider ${
               currentView === 'ADMIN' 
               ? 'bg-white text-[#8c734b] shadow-sm' 
-              : 'text-gray-500 hover:text-gray-800'
+              : 'text-gray-400 hover:text-gray-800'
             }`}
           >
-            관리자
+            Admin / 관리자
           </button>
         </nav>
       </div>
